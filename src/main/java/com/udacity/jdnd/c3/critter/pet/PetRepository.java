@@ -1,4 +1,4 @@
-package com.udacity.jdnd.c3.critter.repository;
+package com.udacity.jdnd.c3.critter.pet;
 
 import com.udacity.jdnd.c3.critter.entity.Pet;
 import org.springframework.data.jpa.repository.JpaRepository;

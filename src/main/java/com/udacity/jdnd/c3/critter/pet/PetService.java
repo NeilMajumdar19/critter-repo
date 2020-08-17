@@ -1,7 +1,6 @@
-package com.udacity.jdnd.c3.critter.service;
+package com.udacity.jdnd.c3.critter.pet;
 
 import com.udacity.jdnd.c3.critter.entity.Pet;
-import com.udacity.jdnd.c3.critter.repository.PetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
