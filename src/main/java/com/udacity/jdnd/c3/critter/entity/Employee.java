@@ -3,11 +3,9 @@ package com.udacity.jdnd.c3.critter.entity;
 import com.udacity.jdnd.c3.critter.user.EmployeeSkill;
 import org.hibernate.annotations.Nationalized;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.DayOfWeek;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -23,6 +21,9 @@ public class Employee {
 
     private Set<EmployeeSkill> skills;
     private Set<DayOfWeek> daysAvailable;
+
+    @ManyToMany
+    private List<Schedule> schedules;
 
     public Long getId() {
         return id;
