@@ -3,11 +3,9 @@ package com.udacity.jdnd.c3.critter.entity;
 import com.udacity.jdnd.c3.critter.pet.PetType;
 import org.hibernate.annotations.Nationalized;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "pet")
@@ -22,7 +20,12 @@ public class Pet {
     @Nationalized
     private String name;
 
-    private Long ownerId;
+    @ManyToOne
+    private Customer owner;
+
+    @ManyToMany
+    private List<Schedule> schedules;
+
     private LocalDate birthDate;
     private String notes;
 
@@ -50,12 +53,20 @@ public class Pet {
         this.name = name;
     }
 
-    public Long getOwnerId() {
-        return ownerId;
+    public Customer getOwner() {
+        return owner;
     }
 
-    public void setOwnerId(Long ownerId) {
-        this.ownerId = ownerId;
+    public void setOwner(Customer owner) {
+        this.owner = owner;
+    }
+
+    public List<Schedule> getSchedules() {
+        return schedules;
+    }
+
+    public void setSchedules(List<Schedule> schedules) {
+        this.schedules = schedules;
     }
 
     public LocalDate getBirthDate() {

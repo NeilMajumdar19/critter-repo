@@ -2,10 +2,7 @@ package com.udacity.jdnd.c3.critter.entity;
 
 import org.hibernate.annotations.Nationalized;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
@@ -21,7 +18,12 @@ public class Customer {
 
     private String phoneNumber;
     private String notes;
-    private List<Long> petIds;
+
+    @OneToMany(mappedBy = "customer")
+    private List<Pet> pets;
+
+    @ManyToMany
+    private List<Schedule> schedules;
 
     public Long getId() {
         return id;
@@ -55,11 +57,19 @@ public class Customer {
         this.notes = notes;
     }
 
-    public List<Long> getPetIds() {
-        return petIds;
+    public List<Pet> getPets() {
+        return pets;
     }
 
-    public void setPetIds(List<Long> petIds) {
-        this.petIds = petIds;
+    public void setPets(List<Pet> pets) {
+        this.pets = pets;
+    }
+
+    public List<Schedule> getSchedules() {
+        return schedules;
+    }
+
+    public void setSchedules(List<Schedule> schedules) {
+        this.schedules = schedules;
     }
 }

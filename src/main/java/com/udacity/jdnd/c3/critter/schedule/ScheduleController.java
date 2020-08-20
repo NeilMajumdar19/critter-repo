@@ -1,8 +1,12 @@
 package com.udacity.jdnd.c3.critter.schedule;
 
+import com.udacity.jdnd.c3.critter.entity.Employee;
 import com.udacity.jdnd.c3.critter.entity.Pet;
 import com.udacity.jdnd.c3.critter.entity.Schedule;
-import com.udacity.jdnd.c3.critter.pet.PetDTO;
+import com.udacity.jdnd.c3.critter.service.CustomerService;
+import com.udacity.jdnd.c3.critter.service.EmployeeService;
+import com.udacity.jdnd.c3.critter.service.PetService;
+import com.udacity.jdnd.c3.critter.service.ScheduleService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,10 +21,32 @@ public class ScheduleController {
     @Autowired
     private ScheduleService scheduleService;
 
+    @Autowired
+    private EmployeeService employeeService;
+
+    @Autowired
+    private PetService petService;
+
+    @Autowired
+    private CustomerService customerService;
+
     @PostMapping
     public ScheduleDTO createSchedule(@RequestBody ScheduleDTO scheduleDTO) {
-        scheduleService.createSchedule(convertScheduleDTOToSchedule(scheduleDTO));
+        Schedule schedule = new Schedule();
+        BeanUtils.copyProperties(scheduleDTO, schedule);
+        List<Employee> employees = new ArrayList<>();
+        List<Pet> pets = new ArrayList<>();
+        for(Long empId : scheduleDTO.getEmployeeIds())
+            employees.add(employeeService.getEmployeeById(empId));
+        for(Long petId: scheduleDTO.getPetIds())
+            pets.add(petService.getPetById(petId));
+        schedule.setEmployees(employees);
+        schedule.setPets(pets);
+        scheduleService.createSchedule(schedule);
         return scheduleDTO;
+
+
+
     }
 
     @GetMapping
@@ -31,24 +57,17 @@ public class ScheduleController {
 
     @GetMapping("/pet/{petId}")
     public List<ScheduleDTO> getScheduleForPet(@PathVariable long petId) {
-        return convertSchedulesToScheduleDTOs(scheduleService.getScheduleForPet(petId));
+        return convertSchedulesToScheduleDTOs(scheduleService.getScheduleForPet(petService.getPetById(petId)));
     }
 
     @GetMapping("/employee/{employeeId}")
     public List<ScheduleDTO> getScheduleForEmployee(@PathVariable long employeeId) {
-        throw new UnsupportedOperationException();
+        return convertSchedulesToScheduleDTOs(scheduleService.getScheduleForEmployee(employeeService.getEmployeeById(employeeId)));
     }
 
     @GetMapping("/customer/{customerId}")
     public List<ScheduleDTO> getScheduleForCustomer(@PathVariable long customerId) {
-        throw new UnsupportedOperationException();
-    }
-
-    private static Schedule convertScheduleDTOToSchedule(ScheduleDTO scheduleDTO)
-    {
-        Schedule schedule = new Schedule();
-        BeanUtils.copyProperties(scheduleDTO, schedule);
-        return schedule;
+        return convertSchedulesToScheduleDTOs(scheduleService.getScheduleForCustomer(customerService.getOwnerById(customerId)));
     }
 
     private static ScheduleDTO convertScheduleToScheduleDTO(Schedule schedule)
