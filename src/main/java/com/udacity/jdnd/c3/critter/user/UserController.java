@@ -78,7 +78,17 @@ public class UserController {
     //given by EmployeeRequest
     @GetMapping("/employee/availability")
     public List<EmployeeDTO> findEmployeesForService(@RequestBody EmployeeRequestDTO employeeDTO) {
-        throw new UnsupportedOperationException();
+        DayOfWeek day = employeeDTO.getDate().getDayOfWeek();
+        Set<EmployeeSkill> skills = employeeDTO.getSkills();
+        List<Employee> employees = employeeService.getEmployeesByDaysAvailable(day);
+        List<Employee> removeList = new ArrayList<>();
+        for(EmployeeSkill skill : skills)
+        {
+            removeList.addAll(employeeService.getEmployeesWithoutSkill(skill));
+            employees.removeAll(removeList);
+            removeList.clear();
+        }
+        return convertEmployeesToEmployeeDTOs(employees);
     }
 
     private static CustomerDTO convertCustomerToCustomerDTO(Customer customer)
@@ -90,10 +100,10 @@ public class UserController {
 
     private static List<CustomerDTO> convertCustomersToCustomerDTOs(List<Customer> customers)
     {
-        List<CustomerDTO> customerDTOS = new ArrayList<>();
+        List<CustomerDTO> customerDTOs = new ArrayList<>();
         for(Customer c : customers)
-            customerDTOS.add(convertCustomerToCustomerDTO(c));
-        return customerDTOS;
+            customerDTOs.add(convertCustomerToCustomerDTO(c));
+        return customerDTOs;
     }
 
     private static EmployeeDTO convertEmployeeToEmployeeDTO(Employee employee)
@@ -101,6 +111,14 @@ public class UserController {
         EmployeeDTO employeeDTO = new EmployeeDTO();
         BeanUtils.copyProperties(employee, employeeDTO);
         return employeeDTO;
+    }
+
+    private static List<EmployeeDTO> convertEmployeesToEmployeeDTOs(List<Employee> employees)
+    {
+        List<EmployeeDTO> employeeDTOs = new ArrayList<>();
+        for(Employee e : employees)
+            employeeDTOs.add(convertEmployeeToEmployeeDTO(e));
+        return employeeDTOs;
     }
 
 }
