@@ -1,5 +1,6 @@
 package com.udacity.jdnd.c3.critter.service;
 
+import com.udacity.jdnd.c3.critter.entity.Customer;
 import com.udacity.jdnd.c3.critter.entity.Pet;
 import com.udacity.jdnd.c3.critter.repository.PetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +31,8 @@ public class PetService {
         return petRepository.findAll();
     }
 
-    public List<Pet> getPetsByOwner(Long ownerId)
+    public List<Pet> getPetsByOwner(Customer owner)
     {
-        return petRepository.findByOwnerId(ownerId);
+        return petRepository.findByOwner(owner);
     }
 }

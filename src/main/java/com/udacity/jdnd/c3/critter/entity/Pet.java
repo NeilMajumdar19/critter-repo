@@ -23,7 +23,7 @@ public class Pet {
     @ManyToOne
     private Customer owner;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "pets")
     private List<Schedule> schedules;
 
     private LocalDate birthDate;
