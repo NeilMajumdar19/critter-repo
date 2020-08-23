@@ -20,7 +20,7 @@ public class Pet {
     @Nationalized
     private String name;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Customer owner;
 
     @ManyToMany(mappedBy = "pets")

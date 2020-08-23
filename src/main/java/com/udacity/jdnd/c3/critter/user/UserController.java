@@ -38,6 +38,7 @@ public class UserController {
         for(Long petId : customerDTO.getPetIds())
             pets.add(petService.getPetById(petId));
         customer.setPets(pets);
+        customerService.saveCustomer(customer);
         return customerDTO;
 
     }
