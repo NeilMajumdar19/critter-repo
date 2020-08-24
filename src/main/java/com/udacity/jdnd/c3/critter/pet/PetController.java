@@ -26,7 +26,7 @@ public class PetController {
         BeanUtils.copyProperties(petDTO, pet);
         pet.setOwner(customerService.getOwnerById(petDTO.getOwnerId()));
         petService.savePet(pet);
-        return petDTO;
+        return convertPetToPetDTO(pet);
     }
 
     @GetMapping("/{petId}")
@@ -55,8 +55,14 @@ public class PetController {
     private static List<PetDTO> convertPetsToPetDTOs(List<Pet> pets)
     {
         List<PetDTO> petDTOs = new ArrayList<PetDTO>();
+        PetDTO petDTO;
         for(Pet p : pets)
-            petDTOs.add(convertPetToPetDTO(p));
+        {
+            petDTO = convertPetToPetDTO(p);
+            petDTO.setOwnerId(p.getOwner().getId());
+            petDTOs.add(petDTO);
+        }
+
         return petDTOs;
     }
 }

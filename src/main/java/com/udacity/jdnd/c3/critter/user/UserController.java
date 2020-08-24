@@ -34,12 +34,8 @@ public class UserController {
     public CustomerDTO saveCustomer(@RequestBody CustomerDTO customerDTO){
         Customer customer = new Customer();
         BeanUtils.copyProperties(customerDTO, customer);
-        List<Pet> pets = new ArrayList<>();
-        for(Long petId : customerDTO.getPetIds())
-            pets.add(petService.getPetById(petId));
-        customer.setPets(pets);
         customerService.saveCustomer(customer);
-        return customerDTO;
+        return convertCustomerToCustomerDTO(customer);
 
     }
 
@@ -59,7 +55,7 @@ public class UserController {
         Employee employee = new Employee();
         BeanUtils.copyProperties(employeeDTO, employee);
         employeeService.saveEmployee(employee);
-        return employeeDTO;
+        return convertEmployeeToEmployeeDTO(employee);
     }
 
     @PostMapping("/employee/{employeeId}")

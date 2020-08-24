@@ -13,7 +13,7 @@ public class Pet {
 
     @Id
     @GeneratedValue
-    private Long id;
+    private long id;
 
     private PetType type;
 

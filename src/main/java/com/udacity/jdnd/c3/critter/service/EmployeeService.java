@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.DayOfWeek;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -20,7 +22,10 @@ public class EmployeeService {
 
     public Employee getEmployeeById(Long empId)
     {
-        return employeeRepository.findById(empId).get();
+        Optional<Employee> employee = employeeRepository.findById(empId);
+        if(employee.isPresent())
+            return employee.get();
+        throw new NoSuchElementException();
     }
 
     public Employee saveEmployee(Employee employee)
