@@ -14,7 +14,7 @@ public class Employee {
 
     @Id
     @GeneratedValue
-    private Long id;
+    private long id;
 
     @Nationalized
     private String name;

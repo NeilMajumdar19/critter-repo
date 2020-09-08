@@ -15,9 +15,9 @@ public class CustomerService {
     @Autowired
     private CustomerRepository customerRepository;
 
-    public Customer getOwnerById(Long ownerId)
+    public Customer getCustomerById(Long customerId)
     {
-        return customerRepository.findById(ownerId).get();
+        return customerRepository.findById(customerId).get();
     }
 
     public Customer saveCustomer(Customer customer)
@@ -29,4 +29,5 @@ public class CustomerService {
     {
         return customerRepository.findAll();
     }
+
 }

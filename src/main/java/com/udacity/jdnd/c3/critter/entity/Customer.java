@@ -19,7 +19,7 @@ public class Customer {
     private String phoneNumber;
     private String notes;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
     private List<Pet> pets;
 
     @ManyToMany(mappedBy = "customers")

@@ -67,7 +67,7 @@ public class ScheduleController {
 
     @GetMapping("/customer/{customerId}")
     public List<ScheduleDTO> getScheduleForCustomer(@PathVariable long customerId) {
-        return convertSchedulesToScheduleDTOs(scheduleService.getScheduleForCustomer(customerService.getOwnerById(customerId)));
+        return convertSchedulesToScheduleDTOs(scheduleService.getScheduleForCustomer(customerService.getCustomerById(customerId)));
     }
 
     private static ScheduleDTO convertScheduleToScheduleDTO(Schedule schedule)
