@@ -1,5 +1,6 @@
 package com.udacity.jdnd.c3.critter.schedule;
 
+import com.udacity.jdnd.c3.critter.entity.Customer;
 import com.udacity.jdnd.c3.critter.entity.Employee;
 import com.udacity.jdnd.c3.critter.entity.Pet;
 import com.udacity.jdnd.c3.critter.entity.Schedule;
@@ -36,12 +37,20 @@ public class ScheduleController {
         BeanUtils.copyProperties(scheduleDTO, schedule);
         List<Employee> employees = new ArrayList<>();
         List<Pet> pets = new ArrayList<>();
+        List<Customer> customers = new ArrayList<>();
         for(Long empId : scheduleDTO.getEmployeeIds())
             employees.add(employeeService.getEmployeeById(empId));
+        Pet addedPet;
         for(Long petId: scheduleDTO.getPetIds())
-            pets.add(petService.getPetById(petId));
+        {
+            addedPet = petService.getPetById(petId);
+            pets.add(addedPet);
+            customers.add(addedPet.getOwner());
+        }
+
         schedule.setEmployees(employees);
         schedule.setPets(pets);
+        schedule.setCustomers(customers);
         scheduleService.createSchedule(schedule);
         return scheduleDTO;
 
@@ -74,6 +83,14 @@ public class ScheduleController {
     {
         ScheduleDTO scheduleDTO = new ScheduleDTO();
         BeanUtils.copyProperties(schedule, scheduleDTO);
+        List<Long> employeeIds = new ArrayList<>();
+        List<Long> petIds = new ArrayList<>();
+        for(Employee employee : schedule.getEmployees())
+            employeeIds.add(employee.getId());
+        for(Pet pet : schedule.getPets())
+            petIds.add(pet.getId());
+        scheduleDTO.setEmployeeIds(employeeIds);
+        scheduleDTO.setPetIds(petIds);
         return scheduleDTO;
     }
 
