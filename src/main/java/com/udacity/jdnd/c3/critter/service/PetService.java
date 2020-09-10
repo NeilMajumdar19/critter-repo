@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -23,7 +25,10 @@ public class PetService {
 
     public Pet getPetById(Long petId)
     {
-        return petRepository.findById(petId).get();
+        Optional<Pet> pet = petRepository.findById(petId);
+        if(pet.isPresent())
+           return pet.get();
+        throw new NoSuchElementException("Pet does not exist");
     }
 
     public List<Pet> getPets()

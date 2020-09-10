@@ -25,7 +25,7 @@ public class EmployeeService {
         Optional<Employee> employee = employeeRepository.findById(empId);
         if(employee.isPresent())
             return employee.get();
-        throw new NoSuchElementException();
+        throw new NoSuchElementException("Employee does not exist");
     }
 
     public Employee saveEmployee(Employee employee)

@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -17,7 +19,10 @@ public class CustomerService {
 
     public Customer getCustomerById(Long customerId)
     {
-        return customerRepository.findById(customerId).get();
+        Optional<Customer> customer = customerRepository.findById(customerId);
+        if(customer.isPresent())
+            return customer.get();
+        throw new NoSuchElementException("Customer does not exist");
     }
 
     public Customer saveCustomer(Customer customer)
